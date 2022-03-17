@@ -18,6 +18,8 @@ jobs:
           echo "VAR1=${VAR1}"
           echo "::set-output name=var1::${VAR1}"
 
+          echo "VAR2=env-var-2" >> $GITHUB_ENV
+
   use-output:
     needs: setvar
     runs-on: ubuntu-latest
@@ -31,4 +33,4 @@ jobs:
     uses: joshxjin/experiments/.github/workflows/test-job.yaml@main
     with:
       input_var_1: '${{ needs.setvar.outputs.var1 }}-call'
-      input_var_2: 'var2-call'
+      input_var_2: ${{ env.VAR2 }}

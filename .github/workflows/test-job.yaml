@@ -48,7 +48,7 @@ jobs:
         echo "WORKFLOW_DISPATCHVAR2=${{ github.event.inputs.input_var_2 }}"
         echo "WORKFLOW_DISPATCHVAR3=${{ github.event.inputs.input_var_3 }}"
 
-        echo "WORKFLOW_CALLVAR1=${{ inputs.input_var_1 || }}"
+        echo "WORKFLOW_CALLVAR1=${{ inputs.input_var_1 }}"
         echo "WORKFLOW_CALLVAR2=${{ inputs.input_var_2 }}"
 
         echo "DEFAULT_VAR1=${{ env.DEFAULT_INPUT_VAR1 }}"

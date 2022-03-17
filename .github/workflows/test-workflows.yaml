@@ -16,7 +16,7 @@ jobs:
         run: |
           VAR1=${{ github.event_name }}
           echo "VAR1=${VAR1}"
-          echo "::set-output name=VAR1::${VAR1}"
+          echo "::set-output name=var1::${VAR1}"
 
   call-test-job:
     needs: set-var

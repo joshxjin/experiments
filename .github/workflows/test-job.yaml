@@ -59,6 +59,8 @@ jobs:
         echo "VAR2=${{ github.event.inputs.input_var_2 || inputs.input_var_2 || env.DEFAULT_INPUT_VAR2 }}" >> $GITHUB_ENV
         echo "VAR3=${{ github.event.inputs.input_var_3 || env.DEFAULT_INPUT_VAR3 }}" >> $GITHUB_ENV
 
-        echo ${{ env.VAR1 }}
-        echo ${{ env.VAR2 }}
-        echo ${{ env.VAR3 }}
+    - name: Print Results
+      run: |
+        echo "RESULT1=${{ env.VAR1 }}"
+        echo "RESULT2=${{ env.VAR2 }}"
+        echo "RESULT3=${{ env.VAR3 }}"

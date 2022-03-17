@@ -16,11 +16,11 @@ jobs:
         run: |
           VAR1=${{ github.event_name }}
           echo "VAR1=${VAR1}"
-          echo "::set-output name=deployment_env::${VAR1}"
+          echo "::set-output name=VAR1::${VAR1}"
 
   call-test-job:
     needs: set-var
     uses: joshxjin/experiments/.github/workflows/test-job.yaml@main
     with:
-      input_var_1: '${{ needs.trigger.outputs.deployment_env }}'
+      input_var_1: ${{ needs.trigger.outputs.deployment_env }}
       input_var_2: 'var2-call'

@@ -9,7 +9,7 @@ jobs:
   set-var:
     runs-on: ubuntu-latest
     outputs:
-      deployment_env: ${{ steps.set_var.outputs.var1 }}
+      var1: ${{ steps.set_var.outputs.var1 }}
     steps:
       - name: set-var
         id: set_var
@@ -22,5 +22,5 @@ jobs:
     needs: set-var
     uses: joshxjin/experiments/.github/workflows/test-job.yaml@main
     with:
-      input_var_1: ${{ needs.trigger.outputs.deployment_env }}
+      input_var_1: '${{ needs.trigger.outputs.var1 }}'
       input_var_2: 'var2-call'

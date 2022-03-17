@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  VAR2: default-var2
+
 jobs:
   setvar:
     runs-on: ubuntu-latest

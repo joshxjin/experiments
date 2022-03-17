@@ -44,6 +44,17 @@ jobs:
     steps:
     - name: Setup The Variables
       run: |
+        echo "WORKFLOW_DISPATCH_VAR1=${{ github.event.inputs.input_var_1 }}"
+        echo "WORKFLOW_DISPATCHVAR2=${{ github.event.inputs.input_var_2 }}"
+        echo "WORKFLOW_DISPATCHVAR3=${{ github.event.inputs.input_var_3 }}"
+
+        echo "WORKFLOW_CALLVAR1=${{ inputs.input_var_1 || }}"
+        echo "WORKFLOW_CALLVAR2=${{ inputs.input_var_2 }}"
+
+        echo "DEFAULT_VAR1=${{ env.DEFAULT_INPUT_VAR1 }}"
+        echo "DEFAULT_VAR2=${{ env.DEFAULT_INPUT_VAR2 }}"
+        echo "DEFAULT_VAR3=${{ env.DEFAULT_INPUT_VAR3 }}"
+
         echo "VAR1=${{ github.event.inputs.input_var_1 || inputs.input_var_1 || env.DEFAULT_INPUT_VAR1 }}" >> $GITHUB_ENV
         echo "VAR2=${{ github.event.inputs.input_var_2 || inputs.input_var_2 || env.DEFAULT_INPUT_VAR2 }}" >> $GITHUB_ENV
         echo "VAR3=${{ github.event.inputs.input_var_3 || env.DEFAULT_INPUT_VAR3 }}" >> $GITHUB_ENV

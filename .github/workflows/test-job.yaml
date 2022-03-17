@@ -1,0 +1,53 @@
+Name: Test Job 1
+
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      input_var_1:
+        description: 'var1'
+        required: true
+        default: 'var1-dispatch'
+      input_var_2:
+        description: 'var2'
+        required: true
+        default: 'var2-dispatch'
+      input_var_3:
+        description: 'var3'
+        required: true
+        default: 'var3-dispatch'
+  workflow_call:
+    inputs:
+      input_var_1:
+        description: 'var1'
+        required: true
+        type: string
+      input_var_2:
+        description: 'var2'
+        required: true
+        type: string
+
+env:
+  DEFAULT_INPUT_VAR1: 'var1-default'
+  DEFAULT_INPUT_VAR2: 'var2-default'
+  DEFAULT_INPUT_VAR3: 'var3-default'
+
+jobs:
+  deploy:
+    name: Deploy Infrastructure
+    runs-on: [self-hosted, cd-runners]
+    defaults:
+      run:
+        # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+        shell: bash
+
+    steps:
+    - name: Setup The Variables
+      run: |
+        echo "VAR1=${{ github.event.inputs.input_var_1 || inputs.input_var_1 || env.DEFAULT_INPUT_VAR1 }}" >> $GITHUB_ENV
+        echo "VAR2=${{ github.event.inputs.input_var_2 || inputs.input_var_2 || env.DEFAULT_INPUT_VAR2 }}" >> $GITHUB_ENV
+        echo "VAR3=${{ github.event.inputs.input_var_3 || env.DEFAULT_INPUT_VAR3 }}" >> $GITHUB_ENV
+
+        echo ${{ env.VAR1 }}
+        echo ${{ env.VAR2 }}
+        echo ${{ env.VAR3 }}

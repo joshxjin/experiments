@@ -1,0 +1,13 @@
+name: Test Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  call-test-job:
+    uses: joshxjin/experiments/.github/workflows/bump-version.yaml@main
+    with:
+      input_var_1: var1-call
+      input_var_2: var2-call

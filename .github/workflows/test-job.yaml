@@ -34,8 +34,8 @@ env:
 
 jobs:
   deploy:
-    name: Deploy Infrastructure
-    runs-on: [self-hosted, cd-runners]
+    name: Test Job
+    runs-on: ubuntu-latest
     defaults:
       run:
         # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest

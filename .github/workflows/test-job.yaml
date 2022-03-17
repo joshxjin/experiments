@@ -55,9 +55,9 @@ jobs:
         echo "DEFAULT_VAR2=${{ env.DEFAULT_INPUT_VAR2 }}"
         echo "DEFAULT_VAR3=${{ env.DEFAULT_INPUT_VAR3 }}"
 
-        if [[ ${{ inputs.input_var_1 }} == "development" ]]; then
+        if [[ "${{ inputs.input_var_1 }}" == "development" ]]; then
             CLUSTER="dev-dev"
-        elif [[ ${{ inputs.input_var_1 }} == "partner" ]]; then
+        elif [[ "${{ inputs.input_var_1 }}" == "partner" ]]; then
             CLUSTER="part-ci"
         else
             CLUSTER="ci"

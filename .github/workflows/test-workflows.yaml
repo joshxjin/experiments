@@ -7,7 +7,7 @@ on:
 
 jobs:
   call-test-job:
-    uses: joshxjin/experiments/.github/workflows/bump-version.yaml@main
+    uses: joshxjin/experiments/.github/workflows/test-job.yaml@main
     with:
       input_var_1: var1-call
       input_var_2: var2-call

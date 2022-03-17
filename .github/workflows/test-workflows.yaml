@@ -22,5 +22,5 @@ jobs:
     needs: set-var
     uses: joshxjin/experiments/.github/workflows/test-job.yaml@main
     with:
-      input_var_1: ${{ needs.trigger.outputs.deployment_env }}
+      input_var_1: '${{ needs.trigger.outputs.deployment_env }}'
       input_var_2: 'var2-call'

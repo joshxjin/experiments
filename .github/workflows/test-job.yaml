@@ -55,6 +55,15 @@ jobs:
         echo "DEFAULT_VAR2=${{ env.DEFAULT_INPUT_VAR2 }}"
         echo "DEFAULT_VAR3=${{ env.DEFAULT_INPUT_VAR3 }}"
 
+        if [[ ${{ inputs.input_var_1 }} == "development" ]]; then
+            CLUSTER="dev-dev"
+        elif [[ ${{ inputs.input_var_1 }} == "partner" ]]; then
+            CLUSTER="part-ci"
+        else
+            CLUSTER="ci"
+        fi
+        echo "CLUSTER=${CLUSTER}" >> $GITHUB_ENV
+
         echo "VAR1=${{ github.event.inputs.input_var_1 || inputs.input_var_1 || env.DEFAULT_INPUT_VAR1 }}" >> $GITHUB_ENV
         echo "VAR2=${{ github.event.inputs.input_var_2 || inputs.input_var_2 || env.DEFAULT_INPUT_VAR2 }}" >> $GITHUB_ENV
         echo "VAR3=${{ github.event.inputs.input_var_3 || env.DEFAULT_INPUT_VAR3 }}" >> $GITHUB_ENV
@@ -64,3 +73,4 @@ jobs:
         echo "RESULT1=${{ env.VAR1 }}"
         echo "RESULT2=${{ env.VAR2 }}"
         echo "RESULT3=${{ env.VAR3 }}"
+        echo "CLUSTER=${{ env.CLUSTER }}"

@@ -81,11 +81,11 @@ jobs:
         echo "dispatch"
 
     - name: Print On Main
-      if: ${{ github.ref == 'refs/heads/main' }}
+      if: (github.ref == 'refs/heads/main')
       run: |
         echo "main"
 
     - name: Print On Main and Dispatch
-      if: ${{ github.ref == 'refs/heads/main' }} && (github.event_name == 'workflow_dispatch')
+      if: (github.ref == 'refs/heads/main') && (github.event_name == 'workflow_dispatch')
       run: |
         echo "main"

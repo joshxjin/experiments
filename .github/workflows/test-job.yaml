@@ -76,7 +76,7 @@ jobs:
         echo "CLUSTER=${{ env.CLUSTER }}"
 
     - name: Print On Dispatch
-      if: ${{github.event_name == 'workflow_dispatch')
+      if: (github.event_name == 'workflow_dispatch')
       run: |
         echo "dispatch"
 

@@ -88,4 +88,14 @@ jobs:
     - name: Print On Main and Dispatch
       if: (github.ref == 'refs/heads/main') && (github.event_name == 'workflow_dispatch')
       run: |
-        echo "main"
+        echo "main & dispatch"
+
+    - name: Print On Call
+      if: (github.event_name == 'workflow_call')
+      run: |
+        echo "call"
+
+    - name: Print On Main and Call
+      if: (github.ref == 'refs/heads/main') && (github.event_name == 'workflow_call')
+      run: |
+        echo "main & call"

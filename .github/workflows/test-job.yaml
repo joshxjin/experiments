@@ -74,3 +74,18 @@ jobs:
         echo "RESULT2=${{ env.VAR2 }}"
         echo "RESULT3=${{ env.VAR3 }}"
         echo "CLUSTER=${{ env.CLUSTER }}"
+
+    - name: Print On Dispatch
+      if: (github.event_name == 'repository_dispatch')
+      run: |
+        echo "dispatch"
+
+    - name: Print On Main
+      if: ${{ github.ref == 'refs/heads/main' }}
+      run: |
+        echo "main"
+
+    - name: Print On Main and Dispatch
+      if: ${{ github.ref == 'refs/heads/main' }} && (github.event_name == 'repository_dispatch')
+      run: |
+        echo "main"

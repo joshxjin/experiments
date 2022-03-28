@@ -3,9 +3,9 @@
 name: Deploy
 
 # Controls when the workflow will run
-on:
-  repository_dispatch:
-    type: [ deploy ]
+#on:
+#  repository_dispatch:
+#    type: [ deploy ]
 
 jobs:
   deploy:

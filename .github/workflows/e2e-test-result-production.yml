@@ -1,6 +1,6 @@
 name: E2E Tests - Production
 
-on:
+#on:
 #  repository_dispatch:
 #    type: [ e2e_test_result_production ]
 

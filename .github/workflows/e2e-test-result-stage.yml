@@ -1,0 +1,20 @@
+name: E2E Tests - Stage
+
+on:
+  repository_dispatch:
+    type: [ e2e_test_result_stage ]
+
+jobs:
+  results:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Passed
+        if: (github.event.client_payload.result == 'success')
+        run: |
+          echo "Stage environment E2E tests passed"
+      
+      - name: Failed
+        if: (github.event.client_payload.result != 'success')
+        run: |
+          echo "Stage environment E2E tests failed"
+          exit 1

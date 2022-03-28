@@ -2,7 +2,7 @@ name: E2E Tests - Dev
 
 on:
   repository_dispatch:
-    type: [e2e-test-result-development]
+    types: [ e2e-test-result-development ]
 
 jobs:
   results:

@@ -51,6 +51,6 @@ jobs:
     uses: joshxjin/experiments/.github/workflows/trigger-repo-dispatch.yml@main
     with:
       environment: ${{ needs.deploy_to_environment.outputs.deploy_env }}
-      continue_deployment: ${{ needs.deploy.outputs.deploy_env }} != 'production'
+      continue_deployment: "${{ needs.deploy.outputs.deploy_env != 'production' }}"
     secrets:
       PAT: ${{ secrets.PAT }}

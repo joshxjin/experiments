@@ -15,19 +15,19 @@ on:
         default: true
         required: true
         type: boolean
-    workflow_call:
-      inputs:
-        environment:
-          description: 'Environment'
-          required: true
-          type: string
-        continue_deployment:
-          description: 'Allow continue deployment to the next environment if E2E test passed'
-          required: true
-          type: boolean
-    secrets:
-      PAT:
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Environment'
         required: true
+        type: string
+      continue_deployment:
+        description: 'Allow continue deployment to the next environment if E2E test passed'
+        required: true
+        type: boolean
+  secrets:
+    PAT:
+      required: true
 
 jobs:
   trigger:

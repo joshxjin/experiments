@@ -35,4 +35,3 @@ jobs:
           -H 'Accept: application/vnd.github.v3+json' \
           -H 'Authorization: Bearer ${{ secrets.PAT }}' \
           --data '{"event_type": "on_demand", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'", "environment": "${{ github.event.inputs.environment || inputs.environment }}", "return_event_type": "deploy" }}'
-

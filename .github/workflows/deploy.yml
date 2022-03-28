@@ -10,8 +10,11 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    outputs:
+      deploy_env: ${{ steps.passed.outputs.deploy_env }}
     steps:
       - name: Trigger
+        id: trigger
         run: |
           echo "event_name: '${{ github.event_name }}'"
           echo "Received request from '${{ github.event.client_payload.repository }}'"
@@ -19,12 +22,37 @@ jobs:
           echo "Result: '${{ github.event.client_payload.result }}'"
     
       - name: Passed
+        id: passed
         if: (github.event_name == 'repository_dispatch') && (github.event.client_payload.result == 'pass')
         run: |
-          echo "DEPLOY!"
+          echo "Previous environment '${{ github.event.client_payload.environment }}' deployment E2E tests passed"
+
+          if [ ${{ github.event.client_payload.environment }} == 'development' ]; then
+            DEPLOYMENT_ENV='partner'
+          elif [ ${{ github.event.client_payload.environment }} == 'partner' ]; then
+            DEPLOYMENT_ENV='stage'
+          elif [ ${{ github.event.client_payload.environment }} == 'stage' ]; then
+            DEPLOYMENT_ENV='production'
+          else
+            echo "Environment: '${{ github.event.client_payload.environment }}' is invalid"
+            exit 1
+          fi
+
+          echo "::set-output name=deploy_env::${DEPLOYMENT_ENV}"
       
       - name: Failed
         if: (github.event_name == 'repository_dispatch') && (github.event.client_payload.result != 'pass')
         run: |
           echo "Failed!"
           exit 1
+
+  call_repo_dispatch:
+    needs: [ deploy ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Repo Dispatch
+        run: |
+          curl -X POST https://api.github.com/repos/joshxjin/experiments-2/dispatches \
+          -H 'Accept: application/vnd.github.v3+json' \
+          -H 'Authorization: Bearer ${{ secrets.PAT }}' \
+          --data '{"event_type": "on_demand", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'", "environment": "${{ needs.deploy.outputs.deploy_env }}", "return_event_type": "deploy" }}'

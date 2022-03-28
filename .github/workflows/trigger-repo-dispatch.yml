@@ -25,9 +25,9 @@ on:
         description: 'Allow continue deployment to the next environment if E2E test passed'
         required: true
         type: boolean
-  secrets:
-    PAT:
-      required: true
+    secrets:
+      PAT:
+        required: true
 
 jobs:
   trigger:

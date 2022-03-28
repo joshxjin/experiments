@@ -19,7 +19,7 @@ jobs:
 
       - name: Passed
         id: passed
-        if: (github.event_name == 'repository_dispatch') && (github.event.client_payload.result == 'pass')
+        if: (github.event_name == 'repository_dispatch') && (github.event.client_payload.result == 'success')
         run: |
           echo "Previous environment '${{ github.event.client_payload.environment }}' deployment E2E tests passed"
 
@@ -37,7 +37,7 @@ jobs:
           echo "::set-output name=deploy_env::${DEPLOYMENT_ENV}"
       
       - name: Failed
-        if: (github.event_name == 'repository_dispatch') && (github.event.client_payload.result != 'pass')
+        if: (github.event_name == 'repository_dispatch') && (github.event.client_payload.result != 'success')
         run: |
           echo "Failed!"
           exit 1

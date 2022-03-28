@@ -2,7 +2,7 @@ name: E2E Tests - Partner
 
 on:
   repository_dispatch:
-    type: [ e2e_test_result_partner ]
+    type: [ e2e-test-result-partner ]
 
 jobs:
   results:

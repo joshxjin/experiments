@@ -2,7 +2,7 @@ name: E2E Tests - Production
 
 on:
   repository_dispatch:
-    type: [ e2e_test_result_production ]
+    type: [ e2e-test-result-production ]
 
 jobs:
   results:

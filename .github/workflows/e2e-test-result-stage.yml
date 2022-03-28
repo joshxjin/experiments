@@ -2,7 +2,7 @@ name: E2E Tests - Stage
 
 on:
   repository_dispatch:
-    type: [ e2e-test-result-stage ]
+    types: [ e2e-test-result-stage ]
 
 jobs:
   results:

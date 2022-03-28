@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   repository_dispatch:
-    type: [ deploy ]
+    types: [ deploy ]
 
 jobs:
   deploy:

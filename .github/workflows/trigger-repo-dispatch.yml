@@ -2,7 +2,6 @@
 
 name: Trigger Repo Dispatch
 
-# Controls when the workflow will run
 on:
   workflow_dispatch:
     inputs:
@@ -11,12 +10,21 @@ on:
         default: 'development'
         required: true
         type: string
-  workflow_call:
-    inputs:
-      environment:
-        description: 'Environment'
+      continue_deployment:
+        description: 'Allow continue deployment to the next environment if E2E test passed'
+        default: true
         required: true
-        type: string
+        type: boolean
+    workflow_call:
+      inputs:
+        environment:
+          description: 'Environment'
+          required: true
+          type: string
+        continue_deployment:
+          description: 'Allow continue deployment to the next environment if E2E test passed'
+          required: true
+          type: boolean
     secrets:
       PAT:
         required: true
@@ -31,7 +39,10 @@ jobs:
     steps:
       - name: Trigger
         run: |
+          RETURN_EVENT_TYPE=`[ ${{ github.event.inputs.continue_deployment || inputs.continue_deployment }} == 'true' ] && echo deploy`
+          echo $RETURN_EVENT_TYPE
+
           curl -X POST https://api.github.com/repos/joshxjin/experiments-2/dispatches \
           -H 'Accept: application/vnd.github.v3+json' \
           -H 'Authorization: Bearer ${{ secrets.PAT }}' \
-          --data '{"event_type": "on_demand", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'", "environment": "${{ github.event.inputs.environment || inputs.environment }}", "return_event_type": "deploy" }}'
+          --data '{"event_type": "on_demand", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'", "environment": "${{ github.event.inputs.environment || inputs.environment }}", "'"${RETURN_EVENT_TYPE}"'" }}'

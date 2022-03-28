@@ -48,11 +48,9 @@ jobs:
 
   call_repo_dispatch:
     needs: [ deploy ]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger Repo Dispatch
-        run: |
-          curl -X POST https://api.github.com/repos/joshxjin/experiments-2/dispatches \
-          -H 'Accept: application/vnd.github.v3+json' \
-          -H 'Authorization: Bearer ${{ secrets.PAT }}' \
-          --data '{"event_type": "on_demand", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'", "environment": "${{ needs.deploy.outputs.deploy_env }}", "return_event_type": "deploy" }}'
+    uses: joshxjin/experiment/.github/workflows/trigger-repo-dispatch.yaml@main
+    with:
+      environment: ${{ needs.deploy_to_environment.outputs.deploy_env }}
+      continue_deployment: (needs.deploy.outputs.deploy_env != 'production')
+    secrets:
+      PAT: ${{ secrets.PAT }}

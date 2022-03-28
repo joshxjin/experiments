@@ -1,11 +1,8 @@
-# This is a basic workflow to help you get started with Actions
-
 name: Deploy
 
-# Controls when the workflow will run
-#on:
-#  repository_dispatch:
-#    type: [ deploy ]
+on:
+  repository_dispatch:
+    type: [ deploy ]
 
 jobs:
   deploy:
@@ -19,13 +16,6 @@ jobs:
           echo "Received request from '${{ github.event.client_payload.repository }}'"
           echo "Test environment: '${{ github.event.client_payload.environment }}'"
           echo "Result: '${{ github.event.client_payload.result }}'"
-
-      - name: Record Result
-        run: |
-          curl -X POST https://api.github.com/repos/joshxjin/experiments/dispatches \
-          -H 'Accept: application/vnd.github.v3+json' \
-          -H 'Authorization: Bearer ${{ secrets.PAT }}' \
-          --data '{"event_type": "e2e_test_result_${{ github.event.client_payload.environment }}", "client_payload": { "result": "'"${{ github.event.client_payload.result }}"'" }}'
 
       - name: Passed
         id: passed

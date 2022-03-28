@@ -1,8 +1,8 @@
 name: E2E Tests - Dev
 
-#on:
-#  repository_dispatch:
-#    type: [ e2e_test_result_development ]
+on:
+  repository_dispatch:
+    type: [ e2e_test_result_development ]
 
 jobs:
   results:

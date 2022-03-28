@@ -1,8 +1,8 @@
 name: E2E Tests - Production
 
 on:
-  repository_dispatch:
-    type: [ e2e_test_result_production ]
+#  repository_dispatch:
+#    type: [ e2e_test_result_production ]
 
 jobs:
   results:

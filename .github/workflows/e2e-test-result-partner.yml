@@ -1,8 +1,8 @@
 name: E2E Tests - Partner
 
 on:
-  repository_dispatch:
-    type: [ e2e_test_result_partner ]
+#  repository_dispatch:
+#    type: [ e2e_test_result_partner ]
 
 jobs:
   results:

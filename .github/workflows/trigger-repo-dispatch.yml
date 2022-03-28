@@ -39,7 +39,7 @@ jobs:
     steps:
       - name: Trigger
         run: |
-          RETURN_EVENT_TYPE=`[ ${{ github.event.inputs.continue_deployment || inputs.continue_deployment }} == 'true' ] && echo deploy`
+          RETURN_EVENT_TYPE=`[ ${{ github.event.inputs.continue_deployment || inputs.continue_deployment }} == 'true' ] && echo deploy || echo ''`
           echo $RETURN_EVENT_TYPE
 
           curl -X POST https://api.github.com/repos/joshxjin/experiments-2/dispatches \

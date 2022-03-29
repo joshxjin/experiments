@@ -38,6 +38,11 @@ jobs:
         id: set_var
         run: |
           echo "set env to development"
+          CLIENT_ID=$(echo '${{ secrets.CREDS }}' | jq -r ".clientId")
+          CLIENT_SECRET=$(echo '${{ secrets.CREDS }}' | jq -r ".clientSecret")
+
+          echo "CLIENT_ID=${CLIENT_ID}"
+          echo "CLIENT_SECRET=${CLIENT_SECRET}"
 
   call-test-job:
     needs: [ setvar, setenv ]

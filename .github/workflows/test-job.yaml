@@ -84,8 +84,8 @@ jobs:
         echo "RESULT3=${{ env.VAR3 }}"
         echo "CLUSTER=${{ env.CLUSTER }}"
 
-        echo "CLIENT_ID=${{ env.CLUSTER }}"
-        echo "CLIENT_SECRET=${{ env.CLUSTER }}"
+        echo "CLIENT_ID=${{ env.CLIENT_ID }}"
+        echo "CLIENT_SECRET=${{ env.CLIENT_SECRET }}"
 
         echo "WORKFLOW=${GITHUB_EVENT_NAME}"
         echo "WORKFLOW=${{ github.event_name }}"

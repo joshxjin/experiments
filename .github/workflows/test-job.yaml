@@ -1,7 +1,7 @@
 name: Test Job 1
 
 on:
-  pull_request:
+#  pull_request:
   workflow_dispatch:
     inputs:
       input_var_1:
@@ -37,6 +37,7 @@ env:
 
 jobs:
   deploy:
+    environment: 'development'
     name: Test Job
     runs-on: ubuntu-latest
     defaults:

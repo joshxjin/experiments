@@ -50,7 +50,6 @@ jobs:
           echo "::set-output name=creds::${CREDS}"
 
   call-test-job:
-    environment: 'development'
     needs: [ setvar, setenv ]
     uses: joshxjin/experiments/.github/workflows/test-job.yaml@main
     with:

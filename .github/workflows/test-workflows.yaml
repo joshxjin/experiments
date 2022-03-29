@@ -46,7 +46,7 @@ jobs:
           echo "CLIENT_ID=${CLIENT_ID}"
           echo "CLIENT_SECRET=${CLIENT_SECRET}"
 
-          CREDS=echo '${{ secrets.CREDS }}'
+          CREDS='echo ${{ secrets.CREDS }}'
           echo "::set-output name=creds::${CREDS}"
 
   call-test-job:

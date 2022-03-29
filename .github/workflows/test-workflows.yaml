@@ -34,3 +34,5 @@ jobs:
     with:
       input_var_1: '${{ needs.setvar.outputs.var1 }}-call'
       input_var_2: 'var2-call'
+    secrets:
+      CREDS: ${{ secrets.CREDS }}

@@ -26,6 +26,9 @@ on:
         description: 'var2'
         required: true
         type: string
+    secrets:
+      CREDS:
+        required: true
 
 env:
   DEFAULT_INPUT_VAR1: 'var1-default'
@@ -68,12 +71,21 @@ jobs:
         echo "VAR2=${{ github.event.inputs.input_var_2 || inputs.input_var_2 || env.DEFAULT_INPUT_VAR2 }}" >> $GITHUB_ENV
         echo "VAR3=${{ github.event.inputs.input_var_3 || env.DEFAULT_INPUT_VAR3 }}" >> $GITHUB_ENV
 
+        CLIENT_ID=$(echo '${{ secrets.CREDS }}' | jq -r ".clientId")
+        CLIENT_SECRET=$(echo '${{ secrets.CREDS }}' | jq -r ".clientSecret")
+
+        echo "CLIENT_ID=${CLIENT_ID}" >> $GITHUB_ENV
+        echo "CLIENT_SECRET=${CLIENT_SECRET}" >> $GITHUB_ENV
+
     - name: Print Results
       run: |
         echo "RESULT1=${{ env.VAR1 }}"
         echo "RESULT2=${{ env.VAR2 }}"
         echo "RESULT3=${{ env.VAR3 }}"
         echo "CLUSTER=${{ env.CLUSTER }}"
+
+        echo "CLIENT_ID=${{ env.CLUSTER }}"
+        echo "CLIENT_SECRET=${{ env.CLUSTER }}"
 
         echo "WORKFLOW=${GITHUB_EVENT_NAME}"
         echo "WORKFLOW=${{ github.event_name }}"

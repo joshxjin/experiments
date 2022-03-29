@@ -37,6 +37,7 @@ jobs:
       - name: set-env
         id: set_env
         run: |
+          -x
           echo "set env to development"
           CLIENT_ID=$(echo '${{ secrets.CREDS }}' | jq -r ".clientId")
           CLIENT_SECRET=$(echo '${{ secrets.CREDS }}' | jq -r ".clientSecret")

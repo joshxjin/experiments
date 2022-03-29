@@ -28,11 +28,22 @@ jobs:
         run: |
           echo "OUTPUT=${{ needs.setvar.outputs.var1 }}"
 
+  set-env:
+    environment: 'development'
+    outputs:
+      creds: ${{ secrets.CREDS }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: set-env
+        id: set_var
+        run: |
+          echo "set env to development"
+
   call-test-job:
-    needs: setvar
+    needs: [ setvar, set-env ]
     uses: joshxjin/experiments/.github/workflows/test-job.yaml@main
     with:
       input_var_1: '${{ needs.setvar.outputs.var1 }}-call'
       input_var_2: 'var2-call'
     secrets:
-      CREDS: ${{ secrets.CREDS }}
+      CREDS: ${{ needs.set-env.outputs.creds }}

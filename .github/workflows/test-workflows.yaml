@@ -28,7 +28,7 @@ jobs:
         run: |
           echo "OUTPUT=${{ needs.setvar.outputs.var1 }}"
 
-  set-env:
+  setenv:
     environment: 'development'
     outputs:
       creds: ${{ secrets.CREDS }}
@@ -40,10 +40,10 @@ jobs:
           echo "set env to development"
 
   call-test-job:
-    needs: [ setvar, set-env ]
+    needs: [ setvar, setenv ]
     uses: joshxjin/experiments/.github/workflows/test-job.yaml@main
     with:
       input_var_1: '${{ needs.setvar.outputs.var1 }}-call'
       input_var_2: 'var2-call'
     secrets:
-      CREDS: ${{ needs.set-env.outputs.creds }}
+      CREDS: ${{ needs.setenv.outputs.creds }}

@@ -31,11 +31,11 @@ jobs:
   setenv:
     environment: 'development'
     outputs:
-      creds: ${{ secrets.CREDS }}
+      creds: ${{ steps.set_env.outputs.creds }}
     runs-on: ubuntu-latest
     steps:
       - name: set-env
-        id: set_var
+        id: set_env
         run: |
           echo "set env to development"
           CLIENT_ID=$(echo '${{ secrets.CREDS }}' | jq -r ".clientId")
@@ -43,6 +43,9 @@ jobs:
 
           echo "CLIENT_ID=${CLIENT_ID}"
           echo "CLIENT_SECRET=${CLIENT_SECRET}"
+
+          CREDS=${{ secrets.CREDS }}
+          echo "::set-output name=creds::${CREDS}"
 
   call-test-job:
     needs: [ setvar, setenv ]

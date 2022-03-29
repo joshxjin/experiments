@@ -16,6 +16,7 @@ jobs:
           echo "Received request from '${{ github.event.client_payload.repository }}'"
           echo "Test environment: '${{ github.event.client_payload.environment }}'"
           echo "Result: '${{ github.event.client_payload.result }}'"
+          echo "Link: '${{ github.event.client_payload.link }}'"
 
       - name: Passed
         id: passed

@@ -42,7 +42,9 @@ jobs:
           CONTINUE_EVENT_TYPE=`[ ${{ github.event.inputs.continue_deployment || inputs.continue_deployment }} == 'true' ] && echo deploy || echo ''`
           echo $CONTINUE_EVENT_TYPE
 
+          LINK="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+
           curl -X POST https://api.github.com/repos/joshxjin/experiments-2/dispatches \
           -H 'Accept: application/vnd.github.v3+json' \
           -H 'Authorization: Bearer ${{ secrets.PAT }}' \
-          --data '{"event_type": "on-demand", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'", "environment": "${{ github.event.inputs.environment || inputs.environment }}", "continue_event_type":  "'"${CONTINUE_EVENT_TYPE}"'" }}'
+          --data '{"event_type": "on-demand", "client_payload": { "repository": "'"$GITHUB_REPOSITORY"'", "environment": "${{ github.event.inputs.environment || inputs.environment }}", "continue_event_type":  "'"${CONTINUE_EVENT_TYPE}"'", "link": "'"LINK"'" }}'

@@ -39,7 +39,7 @@ jobs:
     steps:
       - name: Trigger
         run: |
-          CONTINUE_EVENT_TYPE=`[ ${{ github.event.inputs.continue_deployment || inputs.continue_deployment }} == 'true' ] && echo deploy || echo ''`
+          CONTINUE_EVENT_TYPE=`[ ${{ github.event.inputs.continue_deployment || inputs.continue_deployment }} == 'true' ] && echo promote-deploy || echo ''`
           echo $CONTINUE_EVENT_TYPE
 
           LINK="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"

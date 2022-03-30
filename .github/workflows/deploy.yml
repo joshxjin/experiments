@@ -3,6 +3,18 @@ name: Deploy
 on:
   repository_dispatch:
     types: [ promote-deploy ]
+  workflow_dispatch:
+    inputs:
+      deployEnv:
+        description: 'Promote to environment'
+        required: true
+        type: choice
+        default: development
+        options:
+          - development
+          - partner
+          - stage
+          - production
 
 jobs:
   deploy:
@@ -14,7 +26,7 @@ jobs:
         run: |
           echo "event_name: '${{ github.event_name }}'"
           echo "Received request from '${{ github.event.client_payload.repository }}'"
-          echo "Test environment: '${{ github.event.client_payload.environment }}'"
+          echo "Test environment: '${{ github.event.client_payload.environment || github.event.inputs.deployEnv }}'"
           echo "Result: '${{ github.event.client_payload.result }}'"
           echo "Link: '${{ github.event.client_payload.link }}'"
 
@@ -24,14 +36,14 @@ jobs:
         run: |
           echo "Previous environment '${{ github.event.client_payload.environment }}' deployment E2E tests passed"
 
-          if [ ${{ github.event.client_payload.environment }} == 'development' ]; then
+          if [ ${{ github.event.client_payload.environment || github.event.inputs.deployEnv }} == 'development' ]; then
             DEPLOYMENT_ENV='partner'
-          elif [ ${{ github.event.client_payload.environment }} == 'partner' ]; then
+          elif [ ${{ github.event.client_payload.environment || github.event.inputs.deployEnv }} == 'partner' ]; then
             DEPLOYMENT_ENV='stage'
-          elif [ ${{ github.event.client_payload.environment }} == 'stage' ]; then
+          elif [ ${{ github.event.client_payload.environment || github.event.inputs.deployEnv }} == 'stage' ]; then
             DEPLOYMENT_ENV='production'
           else
-            echo "Environment: '${{ github.event.client_payload.environment }}' is invalid"
+            echo "Environment: '${{ github.event.client_payload.environment || github.event.inputs.deployEnv }}' is invalid"
             exit 1
           fi
 

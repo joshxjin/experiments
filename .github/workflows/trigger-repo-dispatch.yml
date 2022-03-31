@@ -43,8 +43,6 @@ jobs:
           CONTINUE_EVENT_TYPE=`[ ${{ github.event.inputs.continue_deployment || inputs.continue_deployment }} == 'true' ] && echo promote-deploy || echo ''`
           echo $CONTINUE_EVENT_TYPE
 
-          LINK="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-
           curl -X POST https://api.github.com/repos/joshxjin/experiments-2/dispatches \
           -H 'Accept: application/vnd.github.v3+json' \
           -H 'Authorization: Bearer ${{ secrets.PAT }}' \

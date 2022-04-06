@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Trigger Repo Dispatch
+name: Print Event Name
 
 on:
   push:
@@ -15,7 +15,7 @@ on:
     - cron: '5 * * * 1-5'
 
 jobs:
-  trigger:
+  event-name:
     runs-on: ubuntu-latest
     defaults:
       run:

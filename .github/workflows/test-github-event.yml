@@ -12,7 +12,7 @@ on:
 
   # every 5mins Mon -> Fri
   schedule:
-    - cron: '5 * * * 1-5'
+    - cron: '*/5 * * * 1-5'
 
 jobs:
   event-name:

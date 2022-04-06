@@ -1,0 +1,28 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Trigger Repo Dispatch
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+
+  # every 5mins Mon -> Fri
+  schedule:
+    - cron: '5 * * * 1-5'
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    env:
+      RUN_URL: "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+    steps:
+      - name: Trigger
+        run: |
+          echo "event_name=${{ github.event_name }}"

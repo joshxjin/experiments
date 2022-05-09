@@ -31,7 +31,7 @@ jobs:
       id: dispatch_trigger
       if: (github.event_name == 'workflow_dispatch')
       run: |
-        BOOL_VAR='${{ github.event.client_payload.input_var_1 }}'
+        BOOL_VAR='${{ github.event.inputs.input_var_1 }}'
         echo "::set-output name=bool_var::${BOOL_VAR}"
 
   do_thing_true:

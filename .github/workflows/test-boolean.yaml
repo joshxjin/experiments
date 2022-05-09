@@ -24,7 +24,7 @@ jobs:
       id: pr_trigger
       if: (github.event_name == 'pull_request')
       run: |
-        BOOL_VAR=true
+        BOOL_VAR=false
         echo "::set-output name=bool_var::${BOOL_VAR}"
 
     - name: pull request

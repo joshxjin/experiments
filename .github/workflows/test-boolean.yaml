@@ -27,7 +27,7 @@ jobs:
         BOOL_VAR='false'
         echo "::set-output name=bool_var::${BOOL_VAR}"
 
-    - name: pull request
+    - name: workflow dispatch
       id: dispatch_trigger
       if: (github.event_name == 'workflow_dispatch')
       run: |

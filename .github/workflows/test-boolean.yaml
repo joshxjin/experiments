@@ -1,0 +1,59 @@
+name: Test Boolean
+
+on:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      input_var_1:
+        description: 'var1'
+        type: boolean
+        required: true
+        default: false
+
+jobs:
+  trigger:
+    name: Trigger
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      bool_var: ${{ steps.pr_trigger.outputs.bool_var || steps.dispatch_trigger.outputs.bool_var }}
+    steps:
+    - name: pull request
+      id: pr_trigger
+      if: (github.event_name == 'pull_request')
+      run: |
+        BOOL_VAR='false'
+        echo "::set-output name=bool_var::${BOOL_VAR}"
+
+    - name: pull request
+      id: dispatch_trigger
+      if: (github.event_name == 'workflow_dispatch')
+      run: |
+        BOOL_VAR='${{ github.event.client_payload.input_var_1 }}'
+        echo "::set-output name=bool_var::${BOOL_VAR}"
+
+  do_thing_true:
+    needs: [ trigger ]
+    if: always() && ( needs.trigger.outputs.bool_var == 'true' )
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: do thing true
+        run: |
+          echo '${{ needs.trigger.outputs.bool_var }}'
+
+  do_thing_false:
+    needs: [ trigger ]
+    if: always() && ( needs.trigger.outputs.bool_var == 'false' )
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: do thing false
+        run: |
+          echo '${{ needs.trigger.outputs.bool_var }}'

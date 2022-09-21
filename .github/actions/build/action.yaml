@@ -39,8 +39,9 @@ runs:
 
     - name: Use Inputs
       shell: bash
+      id: set_var
       run: |
-        echo "HUB=${{ inputs.hub }}"
+        echo "::add-mask::HUB=${{ inputs.hub }}"
         
         # Parse Azure secret into Terraform variables
         ARM_CLIENT_ID=$(echo '${{ inputs.creds }}' | jq -r ".clientId")
@@ -49,14 +50,24 @@ runs:
         ARM_TENANT_ID=$(echo '${{ inputs.creds }}' | jq -r ".tenantId")
 
         # Save environment variable setup for subsequent steps
-        echo "::add-mask::ARM_CLIENT_ID=${ARM_CLIENT_ID}" >> $GITHUB_ENV
-        echo "::add-mask::ARM_CLIENT_SECRET=${ARM_CLIENT_SECRET}" >> $GITHUB_ENV
-        echo "::add-mask::ARM_SUBSCRIPTION_ID=${ARM_SUBSCRIPTION_ID}" >> $GITHUB_ENV
-        echo "::add-mask::ARM_TENANT_ID=${ARM_TENANT_ID}" >> $GITHUB_ENV
+        # echo "ARM_CLIENT_ID=${ARM_CLIENT_ID}" >> $GITHUB_ENV
+        # echo "ARM_CLIENT_SECRET=${ARM_CLIENT_SECRET}" >> $GITHUB_ENV
+        # echo "ARM_SUBSCRIPTION_ID=${ARM_SUBSCRIPTION_ID}" >> $GITHUB_ENV
+        # echo "ARM_TENANT_ID=${ARM_TENANT_ID}" >> $GITHUB_ENV
+        
+        echo "::set-output name=client_id::$ARM_CLIENT_ID"
+        echo "::set-output name=client_secret::$ARM_CLIENT_SECRET"
+        echo "::set-output name=sub_id::$ARM_SUBSCRIPTION_ID"
+        echo "::set-output name=tenant_id::$ARM_TENANT_ID"
         
         echo "::add-mask::PAT=${PAT}" >> $GITHUB_ENV
 
     - name: Setup ssh key # There are actions for this but prefer not to use a 3rd party here for private keys
       shell: bash
+      env:
+        ARM_CLIENT_ID: ${{ steps.set_var.outputs.client_id }}
+        ARM_CLIENT_SECRET: ${{ steps.set_var.outputs.client_secret }}
+        ARM_SUBSCRIPTION_ID: ${{ steps.set_var.outputs.sub_id }}
+        ARM_TENANT_ID: ${{ steps.set_var.outputs.tenant_id }}
       run: |
         echo "::add-mask::${{ inputs.EVO_HUB_INFRA_DEPLOY_KEY }}" > id_rsa

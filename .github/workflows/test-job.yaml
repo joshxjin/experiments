@@ -1,43 +1,10 @@
 name: Test Job 1
 
 on:
-#  pull_request:
   workflow_dispatch:
-    inputs:
-      input_var_1:
-        description: 'var1'
-        required: true
-        default: 'var1-dispatch'
-      input_var_2:
-        description: 'var2'
-        required: true
-        default: 'var2-dispatch'
-      input_var_3:
-        description: 'var3'
-        required: true
-        default: 'var3-dispatch'
-  workflow_call:
-    inputs:
-      input_var_1:
-        description: 'var1'
-        required: true
-        type: string
-      input_var_2:
-        description: 'var2'
-        required: true
-        type: string
-    secrets:
-      CREDS:
-        required: true
-
-env:
-  DEFAULT_INPUT_VAR1: 'var1-default'
-  DEFAULT_INPUT_VAR2: 'var2-default'
-  DEFAULT_INPUT_VAR3: 'var3-default'
 
 jobs:
   deploy:
-    environment: 'development'
     name: Test Job
     runs-on: ubuntu-latest
     defaults:
@@ -46,72 +13,10 @@ jobs:
         shell: bash
 
     steps:
-    - name: Setup The Variables
-      run: |
-        echo "WORKFLOW_DISPATCH_VAR1=${{ github.event.inputs.input_var_1 }}"
-        echo "WORKFLOW_DISPATCH_VAR2=${{ github.event.inputs.input_var_2 }}"
-        echo "WORKFLOW_DISPATCH_VAR3=${{ github.event.inputs.input_var_3 }}"
-
-        echo "WORKFLOW_CALLVAR1=${{ inputs.input_var_1 }}"
-        echo "WORKFLOW_CALLVAR2=${{ inputs.input_var_2 }}"
-
-        echo "DEFAULT_VAR1=${{ env.DEFAULT_INPUT_VAR1 }}"
-        echo "DEFAULT_VAR2=${{ env.DEFAULT_INPUT_VAR2 }}"
-        echo "DEFAULT_VAR3=${{ env.DEFAULT_INPUT_VAR3 }}"
-
-        if [[ "${{ github.event.inputs.input_var_1 }}" == "development" ]]; then
-            CLUSTER="dev-dev"
-        elif [[ "${{ github.event.inputs.input_var_1 }}" == "partner" ]]; then
-            CLUSTER="part-ci"
-        else
-            CLUSTER="ci"
-        fi
-        echo "CLUSTER=${CLUSTER}" >> $GITHUB_ENV
-
-        echo "VAR1=${{ github.event.inputs.input_var_1 || inputs.input_var_1 || env.DEFAULT_INPUT_VAR1 }}" >> $GITHUB_ENV
-        echo "VAR2=${{ github.event.inputs.input_var_2 || inputs.input_var_2 || env.DEFAULT_INPUT_VAR2 }}" >> $GITHUB_ENV
-        echo "VAR3=${{ github.event.inputs.input_var_3 || env.DEFAULT_INPUT_VAR3 }}" >> $GITHUB_ENV
-
-        CLIENT_ID=$(echo '${{ secrets.CREDS }}' | jq -r ".clientId")
-        CLIENT_SECRET=$(echo '${{ secrets.CREDS }}' | jq -r ".clientSecret")
-
-        echo "CLIENT_ID=${CLIENT_ID}" >> $GITHUB_ENV
-        echo "CLIENT_SECRET=${CLIENT_SECRET}" >> $GITHUB_ENV
-
-    - name: Print Results
-      run: |
-        echo "RESULT1=${{ env.VAR1 }}"
-        echo "RESULT2=${{ env.VAR2 }}"
-        echo "RESULT3=${{ env.VAR3 }}"
-        echo "CLUSTER=${{ env.CLUSTER }}"
-
-        echo "CLIENT_ID=${{ env.CLIENT_ID }}"
-        echo "CLIENT_SECRET=${{ env.CLIENT_SECRET }}"
-
-        echo "WORKFLOW=${GITHUB_EVENT_NAME}"
-        echo "WORKFLOW=${{ github.event_name }}"
-
-    - name: Print On Dispatch
-      if: (github.event_name == 'workflow_dispatch')
-      run: |
-        echo "dispatch"
-
-    - name: Print On Main
-      if: (github.ref == 'refs/heads/main')
-      run: |
-        echo "main"
-
-    - name: Print On Main and Dispatch
-      if: (github.ref == 'refs/heads/main') && (github.event_name == 'workflow_dispatch')
-      run: |
-        echo "main & dispatch"
-
-    - name: Print On Call
-      if: (github.event_name == 'workflow_call')
-      run: |
-        echo "call"
-
-    - name: Print On Main and Call
-      if: (github.ref == 'refs/heads/main') && (github.event_name == 'workflow_call')
-      run: |
-        echo "main & call"
+      - name: Build Version
+        id: buildVersion
+        uses: ./.github/actions/build
+        with:
+          hub: "hub string"
+          creds: ${{secrets.CREDS}}
+          pat: ${{secrets.PAT}}

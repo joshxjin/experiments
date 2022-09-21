@@ -11,14 +11,13 @@ inputs:
   pat:
     description: 'pat secret'
     required: true
+  EVO_HUB_INFRA_DEPLOY_KEY:
+    description: "123"
+    required: true
 
 runs:
   using: "composite"
   steps:
-    # Deploy from current branch if `development` environment
-    - name: checkout repo - current branch
-      uses: actions/checkout@v2
-
     - name: Use Env
       shell: bash
       env:
@@ -27,10 +26,10 @@ runs:
         echo "HUB=${{ inputs.hub }}"
 
         # Parse Azure secret into Terraform variables
-        ARM_CLIENT_ID=$(echo '::add-mask::${{ env.creds }}' | jq -r ".clientId")
-        ARM_CLIENT_SECRET=$(echo '::add-mask::${{ env.creds }}' | jq -r ".clientSecret")
-        ARM_SUBSCRIPTION_ID=$(echo '::add-mask::${{ env.creds }}' | jq -r ".subscriptionId")
-        ARM_TENANT_ID=$(echo '::add-mask::${{ env.creds }}' | jq -r ".tenantId")
+        ARM_CLIENT_ID=$(echo '${{ env.creds }}' | jq -r ".clientId")
+        ARM_CLIENT_SECRET=$(echo '${{ env.creds }}' | jq -r ".clientSecret")
+        ARM_SUBSCRIPTION_ID=$(echo '${{ env.creds }}' | jq -r ".subscriptionId")
+        ARM_TENANT_ID=$(echo '${{ env.creds }}' | jq -r ".tenantId")
 
         # Save environment variable setup for subsequent steps
         echo "ARM_CLIENT_ID_ENV=${ARM_CLIENT_ID}" >> $GITHUB_ENV
@@ -38,7 +37,7 @@ runs:
         echo "ARM_SUBSCRIPTION_ID_ENV=${ARM_SUBSCRIPTION_ID}" >> $GITHUB_ENV
         echo "ARM_TENANT_ID_ENV=${ARM_TENANT_ID}" >> $GITHUB_ENV
 
-        echo "::add-mask::PAT=${PAT}" >> $GITHUB_ENV
+        echo "PAT=${PAT}" >> $GITHUB_ENV
 
     - name: Use Inputs
       shell: bash
@@ -46,10 +45,10 @@ runs:
         echo "HUB=${{ inputs.hub }}"
         
         # Parse Azure secret into Terraform variables
-        ARM_CLIENT_ID=$(echo '::add-mask::${{ inputs.creds }}' | jq -r ".clientId")
-        ARM_CLIENT_SECRET=$(echo '::add-mask::${{ inputs.creds }}' | jq -r ".clientSecret")
-        ARM_SUBSCRIPTION_ID=$(echo '::add-mask::${{ inputs.creds }}' | jq -r ".subscriptionId")
-        ARM_TENANT_ID=$(echo '::add-mask::${{ inputs.creds }}' | jq -r ".tenantId")
+        ARM_CLIENT_ID=$(echo '${{ inputs.creds }}' | jq -r ".clientId")
+        ARM_CLIENT_SECRET=$(echo '${{ inputs.creds }}' | jq -r ".clientSecret")
+        ARM_SUBSCRIPTION_ID=$(echo '${{ inputs.creds }}' | jq -r ".subscriptionId")
+        ARM_TENANT_ID=$(echo '${{ inputs.creds }}' | jq -r ".tenantId")
 
         # Save environment variable setup for subsequent steps
         echo "ARM_CLIENT_ID=${ARM_CLIENT_ID}" >> $GITHUB_ENV
@@ -57,9 +56,9 @@ runs:
         echo "ARM_SUBSCRIPTION_ID=${ARM_SUBSCRIPTION_ID}" >> $GITHUB_ENV
         echo "ARM_TENANT_ID=${ARM_TENANT_ID}" >> $GITHUB_ENV
         
-        echo "::add-mask::PAT=${PAT}" >> $GITHUB_ENV
+        echo "PAT=${PAT}" >> $GITHUB_ENV
 
     - name: Setup ssh key # There are actions for this but prefer not to use a 3rd party here for private keys
       shell: bash
       run: |
-        echo "::add-mask::${{ inputs.EVO_HUB_INFRA_DEPLOY_KEY }}" > id_rsa
+        echo "${{ inputs.EVO_HUB_INFRA_DEPLOY_KEY }}" > id_rsa

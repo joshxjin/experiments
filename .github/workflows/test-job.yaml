@@ -23,3 +23,4 @@ jobs:
           hub: "hub string"
           creds: ${{secrets.CREDS}}
           pat: ${{secrets.PAT}}
+          EVO_HUB_INFRA_DEPLOY_KEY: "deploy_key"

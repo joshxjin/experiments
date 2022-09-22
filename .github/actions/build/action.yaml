@@ -55,19 +55,26 @@ runs:
         # echo "ARM_SUBSCRIPTION_ID=${ARM_SUBSCRIPTION_ID}" >> $GITHUB_ENV
         # echo "ARM_TENANT_ID=${ARM_TENANT_ID}" >> $GITHUB_ENV
         
+        echo "::add-mask::$ARM_CLIENT_ID"
+        echo "::add-mask::$ARM_CLIENT_SECRET"
+        echo "::add-mask::$ARM_SUBSCRIPTION_ID"
+        echo "::add-mask::$ARM_TENANT_ID"
+        
         echo "::set-output name=client_id::$ARM_CLIENT_ID"
         echo "::set-output name=client_secret::$ARM_CLIENT_SECRET"
         echo "::set-output name=sub_id::$ARM_SUBSCRIPTION_ID"
         echo "::set-output name=tenant_id::$ARM_TENANT_ID"
         
-        echo "::add-mask::PAT=${PAT}" >> $GITHUB_ENV
+        PAT=${{ inputs.pat }}
+        echo "::add-mask::$        PAT"
+        echo "PAT=$PAT" >> $GITHUB_ENV
 
     - name: Setup ssh key # There are actions for this but prefer not to use a 3rd party here for private keys
       shell: bash
       env:
-        ARM_CLIENT_ID: ::add-mask::${{ steps.set_var.outputs.client_id }}
-        ARM_CLIENT_SECRET: ::add-mask::${{ steps.set_var.outputs.client_secret }}
-        ARM_SUBSCRIPTION_ID: ::add-mask::${{ steps.set_var.outputs.sub_id }}
-        ARM_TENANT_ID: ::add-mask::${{ steps.set_var.outputs.tenant_id }}
+        ARM_CLIENT_ID: ${{ steps.set_var.outputs.client_id }}
+        ARM_CLIENT_SECRET: ${{ steps.set_var.outputs.client_secret }}
+        ARM_SUBSCRIPTION_ID: ${{ steps.set_var.outputs.sub_id }}
+        ARM_TENANT_ID: ${{ steps.set_var.outputs.tenant_id }}
       run: |
         echo "::add-mask::${{ inputs.EVO_HUB_INFRA_DEPLOY_KEY }}" > id_rsa

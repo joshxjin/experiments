@@ -29,41 +29,48 @@ runs:
         ARM_CLIENT_SECRET=$(echo '${{ inputs.creds }}' | jq -r ".clientSecret")
         ARM_SUBSCRIPTION_ID=$(echo '${{ inputs.creds }}' | jq -r ".subscriptionId")
         ARM_TENANT_ID=$(echo '${{ inputs.creds }}' | jq -r ".tenantId")
-        AZURE_CLIENT_ID=$(echo '${{ inputs.creds }}' | jq -r ".clientId")
-        AZURE_CLIENT_SECRET=$(echo '${{ inputs.creds }}' | jq -r ".clientSecret")
-        AZURE_SUBSCRIPTION_ID=$(echo '${{ inputs.creds }}' | jq -r ".subscriptionId")
-        AZURE_TENANT_ID=$(echo '${{ inputs.creds }}' | jq -r ".tenantId")
 
         # Save environment variable setup for subsequent steps
         echo "ARM_CLIENT_ID_ENV=${ARM_CLIENT_ID}" >> $GITHUB_ENV
         echo "ARM_CLIENT_SECRET_ENV=${ARM_CLIENT_SECRET}" >> $GITHUB_ENV
         echo "ARM_SUBSCRIPTION_ID_ENV=${ARM_SUBSCRIPTION_ID}" >> $GITHUB_ENV
         echo "ARM_TENANT_ID_ENV=${ARM_TENANT_ID}" >> $GITHUB_ENV
+      
+        ARM_CLIENT_ID_MASK=$(echo '${{ inputs.creds }}' | jq -r ".clientId")
+        ARM_CLIENT_SECRET_MASK=$(echo '${{ inputs.creds }}' | jq -r ".clientSecret")
+        ARM_SUBSCRIPTION_ID_MASK=$(echo '${{ inputs.creds }}' | jq -r ".subscriptionId")
+        ARM_TENANT_ID_MASK=$(echo '${{ inputs.creds }}' | jq -r ".tenantId")
         
-        echo "::add-mask::$ARM_CLIENT_ID"
-        echo "::add-mask::$ARM_CLIENT_SECRET"
-        echo "::add-mask::$ARM_SUBSCRIPTION_ID"
-        echo "::add-mask::$ARM_TENANT_ID"
+        echo "::add-mask::$ARM_CLIENT_ID_MASK"
+        echo "::add-mask::$ARM_CLIENT_SECRET_MASK"
+        echo "::add-mask::$ARM_SUBSCRIPTION_ID_MASK"
+        echo "::add-mask::$ARM_TENANT_ID_MASK"
         
-        echo "::set-output name=client_id::$ARM_CLIENT_ID"
-        echo "::set-output name=client_secret::$ARM_CLIENT_SECRET"
-        echo "::set-output name=sub_id::$ARM_SUBSCRIPTION_ID"
-        echo "::set-output name=tenant_id::$ARM_TENANT_ID"
+        echo "::set-output name=client_id::$ARM_CLIENT_ID_MASK"
+        echo "::set-output name=client_secret::$ARM_CLIENT_SECRET_MASK"
+        echo "::set-output name=sub_id::$ARM_SUBSCRIPTION_ID_MASK"
+        echo "::set-output name=tenant_id::$ARM_TENANT_ID_MASK"
+        
+        # Another set
+        AZURE_CLIENT_ID=$(echo '${{ inputs.creds }}' | jq -r ".clientId")
+        AZURE_CLIENT_SECRET=$(echo '${{ inputs.creds }}' | jq -r ".clientSecret")
+        AZURE_SUBSCRIPTION_ID=$(echo '${{ inputs.creds }}' | jq -r ".subscriptionId")
+        AZURE_TENANT_ID=$(echo '${{ inputs.creds }}' | jq -r ".tenantId")
         
         echo "AZURE_CLIENT_ID_ENV=${AZURE_CLIENT_ID}" >> $GITHUB_ENV
         echo "AZURE_CLIENT_SECRET_ENV=${AZURE_CLIENT_SECRET}" >> $GITHUB_ENV
         echo "AZURE_SUBSCRIPTION_ID_ENV=${AZURE_SUBSCRIPTION_ID}" >> $GITHUB_ENV
         echo "AZURE_TENANT_ID_ENV=${AZURE_TENANT_ID}" >> $GITHUB_ENV
         
-        echo "::add-mask::$AZURE_CLIENT_ID"
-        echo "::add-mask::$AZURE_CLIENT_SECRET"
-        echo "::add-mask::$AZURE_SUBSCRIPTION_ID"
-        echo "::add-mask::$AZURE_TENANT_ID"
+        echo "::add-mask::$AZURE_CLIENT_ID_MASK"
+        echo "::add-mask::$AZURE_CLIENT_SECRET_MASK"
+        echo "::add-mask::$AZURE_SUBSCRIPTION_ID_MASK"
+        echo "::add-mask::$AZURE_TENANT_ID_MASK"
         
-        echo "::set-output name=azure_client_id::$AZURE_CLIENT_ID"
-        echo "::set-output name=azure_client_secret::$AZURE_CLIENT_SECRET"
-        echo "::set-output name=azure_sub_id::$AZURE_SUBSCRIPTION_ID"
-        echo "::set-output name=azure_tenant_id::$AZURE_TENANT_ID"
+        echo "::set-output name=azure_client_id::$AZURE_CLIENT_ID_MASK"
+        echo "::set-output name=azure_client_secret::$AZURE_CLIENT_SECRET_MASK"
+        echo "::set-output name=azure_sub_id::$AZURE_SUBSCRIPTION_ID_MASK"
+        echo "::set-output name=azure_tenant_id::$AZURE_TENANT_ID_MASK"
         
         PAT=${{ inputs.pat }}
         echo "::add-mask::$PAT"
@@ -76,10 +83,6 @@ runs:
         ARM_CLIENT_SECRET: ${{ steps.set_var.outputs.client_secret }}
         ARM_SUBSCRIPTION_ID: ${{ steps.set_var.outputs.sub_id }}
         ARM_TENANT_ID: ${{ steps.set_var.outputs.tenant_id }}
-        AZURE_CLIENT_ID: ${{ steps.set_var.outputs.azure_client_id }}
-        AZURE_CLIENT_SECRET: ${{ steps.set_var.outputs.azure_client_secret }}
-        AZURE_SUBSCRIPTION_ID: ${{ steps.set_var.outputs.azure_sub_id }}
-        AZURE_TENANT_ID: ${{ steps.set_var.outputs.azure_tenant_id }}
       run: |
         echo "::add-mask::${{ inputs.EVO_HUB_INFRA_DEPLOY_KEY }}" > id_rsa
 
@@ -91,10 +94,6 @@ runs:
     - name: Generic Bash 2
       shell: bash
       env:
-        ARM_CLIENT_ID: ${{ steps.set_var.outputs.client_id }}
-        ARM_CLIENT_SECRET: ${{ steps.set_var.outputs.client_secret }}
-        ARM_SUBSCRIPTION_ID: ${{ steps.set_var.outputs.sub_id }}
-        ARM_TENANT_ID: ${{ steps.set_var.outputs.tenant_id }}
         AZURE_CLIENT_ID: ${{ steps.set_var.outputs.azure_client_id }}
         AZURE_CLIENT_SECRET: ${{ steps.set_var.outputs.azure_client_secret }}
         AZURE_SUBSCRIPTION_ID: ${{ steps.set_var.outputs.azure_sub_id }}

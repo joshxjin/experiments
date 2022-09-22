@@ -62,6 +62,11 @@ runs:
         echo "AZURE_SUBSCRIPTION_ID_ENV=${AZURE_SUBSCRIPTION_ID}" >> $GITHUB_ENV
         echo "AZURE_TENANT_ID_ENV=${AZURE_TENANT_ID}" >> $GITHUB_ENV
         
+        AZURE_CLIENT_ID_MASK=$(echo '${{ inputs.creds }}' | jq -r ".clientId")
+        AZURE_CLIENT_SECRET_MASK=$(echo '${{ inputs.creds }}' | jq -r ".clientSecret")
+        AZURE_SUBSCRIPTION_ID_MASK=$(echo '${{ inputs.creds }}' | jq -r ".subscriptionId")
+        AZURE_TENANT_ID_MASK=$(echo '${{ inputs.creds }}' | jq -r ".tenantId")
+        
         echo "::add-mask::$AZURE_CLIENT_ID_MASK"
         echo "::add-mask::$AZURE_CLIENT_SECRET_MASK"
         echo "::add-mask::$AZURE_SUBSCRIPTION_ID_MASK"

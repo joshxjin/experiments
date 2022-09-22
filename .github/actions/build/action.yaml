@@ -41,10 +41,10 @@ runs:
         ARM_SUBSCRIPTION_ID_MASK=$(echo '${{ inputs.creds }}' | jq -r ".subscriptionId")
         ARM_TENANT_ID_MASK=$(echo '${{ inputs.creds }}' | jq -r ".tenantId")
         
-        echo "::add-mask::$ARM_CLIENT_ID_MASK"
-        echo "::add-mask::$ARM_CLIENT_SECRET_MASK"
-        echo "::add-mask::$ARM_SUBSCRIPTION_ID_MASK"
-        echo "::add-mask::$ARM_TENANT_ID_MASK"
+        # echo "::add-mask::$ARM_CLIENT_ID_MASK"
+        # echo "::add-mask::$ARM_CLIENT_SECRET_MASK"
+        # echo "::add-mask::$ARM_SUBSCRIPTION_ID_MASK"
+        # echo "::add-mask::$ARM_TENANT_ID_MASK"
         
         echo "::set-output name=client_id::$ARM_CLIENT_ID_MASK"
         echo "::set-output name=client_secret::$ARM_CLIENT_SECRET_MASK"
@@ -67,10 +67,10 @@ runs:
         AZURE_SUBSCRIPTION_ID_MASK=$(echo '${{ inputs.creds }}' | jq -r ".subscriptionId")
         AZURE_TENANT_ID_MASK=$(echo '${{ inputs.creds }}' | jq -r ".tenantId")
         
-        echo "::add-mask::$AZURE_CLIENT_ID_MASK"
-        echo "::add-mask::$AZURE_CLIENT_SECRET_MASK"
-        echo "::add-mask::$AZURE_SUBSCRIPTION_ID_MASK"
-        echo "::add-mask::$AZURE_TENANT_ID_MASK"
+        # echo "::add-mask::$AZURE_CLIENT_ID_MASK"
+        # echo "::add-mask::$AZURE_CLIENT_SECRET_MASK"
+        # echo "::add-mask::$AZURE_SUBSCRIPTION_ID_MASK"
+        # echo "::add-mask::$AZURE_TENANT_ID_MASK"
         
         echo "::set-output name=azure_client_id::$AZURE_CLIENT_ID_MASK"
         echo "::set-output name=azure_client_secret::$AZURE_CLIENT_SECRET_MASK"
@@ -78,7 +78,7 @@ runs:
         echo "::set-output name=azure_tenant_id::$AZURE_TENANT_ID_MASK"
         
         PAT=${{ inputs.pat }}
-        echo "::add-mask::$PAT"
+        # echo "::add-mask::$PAT"
         echo "PAT=$PAT" >> $GITHUB_ENV
 
     - name: Setup ssh key

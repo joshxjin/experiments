@@ -40,7 +40,7 @@ jobs:
 
         - name: Push experiment-2
           env:
-            commit_url: {GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA::7}
+            commit_url: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA::7}
           run: |
             cd ./${{ env.target_project_path }}
             git add .

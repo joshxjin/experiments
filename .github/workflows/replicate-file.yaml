@@ -39,10 +39,12 @@ jobs:
             cp -R ./${{ env.current_project_path }}/api/${{ env.copy_file }} ./${{ env.target_project_path }}/api/${{ env.copy_file }}
 
         - name: Push experiment-2
+          env:
+            commit_url: {GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA::7}
           run: |
             cd ./${{ env.target_project_path }}
             git add .
             git config user.name github-actions
             git config user.email github-actions@github.com
-            git commit -am "Updated API spec copied."
+            git commit -am "Updated API spec copied from ${{ env.commit_url }}"
             git push

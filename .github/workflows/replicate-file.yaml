@@ -1,0 +1,53 @@
+name: Update API Spec
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'api/api_spec.yaml'
+
+env:
+  current_project_path: "experiments"
+  target_project_path: "experiments_2"
+  copy_file: "api/api_spec.yaml"
+
+jobs:
+    replicate-file:
+        runs-on: ubuntu-latest
+        name: Replicate File
+
+        steps:
+        - name: Checkout Current Project
+          uses: actions/checkout@v3
+          with:
+            ref: main
+            path: ./${{ env.current_project_path }}
+
+        - name: Checkout Target Project
+          uses: actions/checkout@v3
+          with:
+            repository: joshxjin/experiment-2
+            token: ${{ secrets.ACTIONS_TOKEN }}
+            path: ./${{ env.target_project_path }}
+
+        - name: Copy/Create file
+          run: |
+            FILE=./${{ env.current_project_path }}/${{ env.copy_file }}
+            if [ -f "$FILE" ]; then
+              echo "Copying $FILE"
+              cp -R ./${{ env.current_project_path }}/${{ env.copy_file }} ./${{ env.target_project_path }}
+            else 
+              echo "Creating $FILE"
+              touch ./${{ env.target_project_path }}/${{ env.copy_file }}
+            fi
+
+        - name: Push experiment-2
+          run: |
+            cd ./${{ env.target_project_path }}
+            git add .
+            git config user.name github-actions
+            git config user.email github-actions@github.com
+            git commit -am "Updated API spec copied."
+            git push

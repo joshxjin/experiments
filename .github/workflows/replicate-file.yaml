@@ -36,7 +36,7 @@ jobs:
           run: |
             FILE=./${{ env.current_project_path }}/api/${{ env.copy_file }}
             echo "Copying $FILE"
-            cp -R ./${{ env.current_project_path }}/api/${{ env.copy_file }} ./${{ env.target_project_path }}/api
+            cp -R ./${{ env.current_project_path }}/api/${{ env.copy_file }} ./${{ env.target_project_path }}/api/${{ env.copy_file }}
 
         - name: Push experiment-2
           run: |

@@ -28,7 +28,7 @@ jobs:
         - name: Checkout Target Project
           uses: actions/checkout@v3
           with:
-            repository: joshxjin/experiment-2
+            repository: joshxjin/experiments-2
             token: ${{ secrets.ACTIONS_TOKEN }}
             path: ./${{ env.target_project_path }}
 

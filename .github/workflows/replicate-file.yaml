@@ -50,7 +50,7 @@ jobs:
 #            git push
 
           - name: Copy
-            uses: joshxjin/experiments-2/.github/actions/copy-api
+            uses: joshxjin/experiments-2/.github/actions/copy-api@main
             with:
               source_folder_path: 'api'
               target_folder_path: ''

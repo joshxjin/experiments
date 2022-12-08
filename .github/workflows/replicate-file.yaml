@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - 'api/'
+      - 'api/**'
 
 env:
   current_project_path: "experiments"

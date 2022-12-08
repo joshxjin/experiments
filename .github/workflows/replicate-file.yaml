@@ -11,7 +11,7 @@ on:
 env:
   current_project_path: "experiments"
   target_project_path: "experiments_2"
-  copy_file: "api/api_spec.yaml"
+  copy_file: "api_spec.yaml"
 
 jobs:
     replicate-file:
@@ -34,14 +34,9 @@ jobs:
 
         - name: Copy/Create file
           run: |
-            FILE=./${{ env.current_project_path }}/${{ env.copy_file }}
-            if [ -f "$FILE" ]; then
-              echo "Copying $FILE"
-              cp -R ./${{ env.current_project_path }}/${{ env.copy_file }} ./${{ env.target_project_path }}
-            else 
-              echo "Creating $FILE"
-              touch ./${{ env.target_project_path }}/${{ env.copy_file }}
-            fi
+            FILE=./${{ env.current_project_path }}/api/${{ env.copy_file }}
+            echo "Copying $FILE"
+            cp -R ./${{ env.current_project_path }}/api/${{ env.copy_file }} ./${{ env.target_project_path }}/api
 
         - name: Push experiment-2
           run: |

@@ -18,33 +18,40 @@ jobs:
         name: Replicate File
 
         steps:
-        - name: Checkout Current Project
-          uses: actions/checkout@v3
-          with:
-            ref: main
-            path: ./${{ env.current_project_path }}
+#        - name: Checkout Current Project
+#          uses: actions/checkout@v3
+#          with:
+#            ref: main
+#            path: ./${{ env.current_project_path }}
+#
+#        - name: Checkout Target Project
+#          uses: actions/checkout@v3
+#          with:
+#            repository: joshxjin/experiments-2
+#            token: ${{ secrets.ACTIONS_TOKEN }}
+#            path: ./${{ env.target_project_path }}
+#
+#        - name: Copy/Create file
+#          run: |
+#            FILE=./${{ env.current_project_path }}/api/${{ env.copy_file }}
+#            echo "Copying $FILE"
+#            cp -R ./${{ env.current_project_path }}/api ./${{ env.target_project_path }}
+#
+#        # Will fail if there is nothing to commit. There should always something to commit.
+#        - name: Push experiment-2
+#          env:
+#            commit_url: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA::7}
+#          run: |
+#            cd ./${{ env.target_project_path }}
+#            git add .
+#            git config user.name github-actions
+#            git config user.email github-actions@github.com
+#            git commit -am "Updated API spec copied from ${{ env.commit_url }}"
+#            git push
 
-        - name: Checkout Target Project
-          uses: actions/checkout@v3
-          with:
-            repository: joshxjin/experiments-2
-            token: ${{ secrets.ACTIONS_TOKEN }}
-            path: ./${{ env.target_project_path }}
-
-        - name: Copy/Create file
-          run: |
-            FILE=./${{ env.current_project_path }}/api/${{ env.copy_file }}
-            echo "Copying $FILE"
-            cp -R ./${{ env.current_project_path }}/api ./${{ env.target_project_path }}
-
-        # Will fail if there is nothing to commit. There should always something to commit.
-        - name: Push experiment-2
-          env:
-            commit_url: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA::7}
-          run: |
-            cd ./${{ env.target_project_path }}
-            git add .
-            git config user.name github-actions
-            git config user.email github-actions@github.com
-            git commit -am "Updated API spec copied from ${{ env.commit_url }}"
-            git push
+          - name: Copy
+            uses: joshxjin/experiments-2/.github/actions/copy-api
+            with:
+              source_folder_path: 'api'
+              target_folder_path: ''
+              ACTIONS_TOKEN: ${{ secrets.ACTIONS_TOKEN }}

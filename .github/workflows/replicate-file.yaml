@@ -37,6 +37,7 @@ jobs:
             echo "Copying $FILE"
             cp -R ./${{ env.current_project_path }}/api ./${{ env.target_project_path }}
 
+        # Will fail if there is nothing to commit. There should always something to commit.
         - name: Push experiment-2
           env:
             commit_url: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA::7}
